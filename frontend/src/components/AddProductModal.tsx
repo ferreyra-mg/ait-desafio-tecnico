@@ -11,11 +11,12 @@ interface FormData {
 interface ModalProps {
     show: boolean;
     onHide: () => void;
+    onError: (msg: string) => void;
     onConfirm: (data: FormData) => void;
     cliente_id: number;
 }
 
-const AddProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, cliente_id }) => {
+const AddProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, onError, cliente_id }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormData>();
     const [formValues, setFormValues] = useState<FormData>({
         cliente: 0,
@@ -51,10 +52,10 @@ const AddProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, client
             if (response.ok) {
                 onConfirm(data);
             } else {
-                console.error('Error al enviar los datos');
+                onError('Error al enviar los datos');
             }
         } catch (error) {
-            console.error('Error:', error);
+            onError('Error: ' + error);
         }
     };
 
@@ -70,9 +71,9 @@ const AddProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, client
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <div className="text-center mb-4">
-                    <h2 className="text-xl font-bold">Modificar Producto</h2>
+                    <h2 className="text-xl font-bold">Agregar Nuevo Producto</h2>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} role="form">
                     <div className="mb-4">
                         <label htmlFor="codigo" className="block text-sm font-medium text-gray-700 mb-1">Código</label>
                         <input
