@@ -11,7 +11,7 @@ interface ModalProps {
     onError: (msg: string) => void;
 }
 
-const ACCEPTED_FILE_EXTENSIONS = ['xlsx', 'xls'];
+const ACCEPTED_FILE_EXTENSIONS = ['csv', 'xlsx', 'xls'];
 
 const AddProductBulkModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, onError }) => {
     const [file, setFile] = useState<File | null>(null);
@@ -37,17 +37,21 @@ const AddProductBulkModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, on
         }),
     ];
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
         try {
-            const response = await fetch(`http://localhost:8000/api/v1/articulos/`, {
+            const response = await fetch(`http://193.168.15.3:9000/api/v1/upload/`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
+                body: formData,
             });
+
             if (response.ok) {
-                onConfirm(data);
+                onConfirm(formData);
             } else {
                 onError('Error al enviar los datos');
             }
@@ -67,7 +71,7 @@ const AddProductBulkModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, on
                 setFile(selectedFile);
                 processFile(selectedFile);
             } else {
-                onError('Por favor, seleccione un tipo de archivo válido (xlsx, xls).');
+                onError('Por favor, seleccione un tipo de archivo válido (xlsx, xls, csv).');
                 event.target.value = '';
                 setFile(null);
                 setData([]);
@@ -100,11 +104,12 @@ const AddProductBulkModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, on
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center">
             <div className="bg-white rounded-lg p-6 w-full max-w-7xl  mt-14 ">
-                <div className="text-center mb-4 flex flex-col items-center gap-4">
-                    <h2 className="text-xl font-bold">Ingresar/Actualizar Productos</h2>
-                    <input type="file" name="archivo" id="archivo" className="" onChange={handleFileChange} />
-                </div>
-                <form >
+                <form role="form" onSubmit={onSubmit}>
+                    <div className="text-center mb-4 flex flex-col items-center gap-4">
+                        <h2 className="text-xl font-bold">Ingresar/Actualizar Productos</h2>
+                        <label htmlFor="archivo">Archivo</label>
+                        <input type="file" name="archivo" id="archivo" className="" onChange={handleFileChange} />
+                    </div>
                     <div className="mb-4">
                         <ProductsTable columns={columns} data={data} />
                     </div>
