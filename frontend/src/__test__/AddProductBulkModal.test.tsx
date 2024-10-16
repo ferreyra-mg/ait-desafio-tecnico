@@ -1,6 +1,5 @@
-// AddProductBulkModal.test.tsx
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import "@testing-library/jest-dom";
 import userEvent from '@testing-library/user-event';
 import AddProductBulkModal from '../components/AddProductBulkModal';

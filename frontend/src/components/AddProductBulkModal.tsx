@@ -1,5 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Articulo } from '../App';
 import ProductsTable from './ProductsTable';
 import * as XLSX from 'xlsx';

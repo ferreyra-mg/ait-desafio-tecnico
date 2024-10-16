@@ -1,0 +1,29 @@
+[
+	{
+		"model": "api.cliente",
+		"pk": 1,
+		"fields": {
+			"nombre": "Cliente 1"
+		}
+	},
+	{
+		"model": "api.articulo",
+		"pk": 1,
+		"fields": {
+			"cliente": 1,
+			"codigo": "Articulo 1",
+			"descripcion": "Articulo de Prueba 1",
+			"precio": "500.00"
+		}
+	},
+	{
+		"model": "api.articulo",
+		"pk": 2,
+		"fields": {
+			"cliente": 1,
+			"codigo": "Articulo 2",
+			"descripcion": "Articulo de Prueba 2",
+			"precio": "300.25"
+		}
+	}
+]
