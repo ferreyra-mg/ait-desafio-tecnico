@@ -10,6 +10,7 @@ import DeleteProductModal from './components/DeleteProductModal';
 import AddProductBulkModal from './components/AddProductBulkModal';
 import AddProductModal from './components/AddProductModal';
 import React from 'react';
+import DownloadButton from './components/DownloadProductsList';
 
 export type Articulo = {
     id: number;
@@ -36,7 +37,7 @@ function App() {
 
     const fetchProducts = () => {
         if (isLoggedIn) {
-            fetch('http://193.168.15.3:9000/api/v1/articulos')
+            fetch('http://localhost:8000/api/v1/articulos')
                 .then(response => response.json())
                 .then(data => setDatos(data))
                 .catch(error => console.error('Error fetching articulos:', error));
@@ -45,7 +46,7 @@ function App() {
 
     const onSubmit: SubmitHandler<{ user: string; password: string }> = (data) => {
         if (data.user === 'admin' && data.password === 'admin') {
-            fetch('http://193.168.15.3:9000/api/v1/clientes/')
+            fetch('http://localhost:8000/api/v1/clientes/')
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -164,8 +165,9 @@ function App() {
                 {!isLoggedIn && <Login onSubmit={onSubmit} />}
 
                 <div className='flex justify-end gap-4'>
+                    {isLoggedIn && <DownloadButton />}
                     {isLoggedIn && <button className="btn px-2 py-2 text-sm bg-blue-900 text-white cursor-pointer" onClick={() => setShowAddModal(true)}>Agregar Producto</button>}
-                    {isLoggedIn && <button className="btn px-2 py-2 text-sm bg-blue-900 text-white cursor-pointer" onClick={() => setShowAddBulkModal(true)}>Agregar Productos de manera Masiva</button>}
+                    {isLoggedIn && <button className="btn px-2 py-2 text-sm bg-orange-600 text-white cursor-pointer" onClick={() => setShowAddBulkModal(true)}>Agregar Productos de manera Masiva</button>}
                 </div>
                 {isLoggedIn && showAddModal && clienteId > 0 && <AddProductModal show={showAddModal} onHide={onHideAddModal} onConfirm={onConfirmAddModal} cliente_id={clienteId} onError={onError} />}
                 {isLoggedIn && showAddBulkModal && clienteId > 0 && <AddProductBulkModal show={showAddBulkModal} onHide={onHideAddBulkModal} onConfirm={onConfirmAddBulkModal} onError={onError} />}

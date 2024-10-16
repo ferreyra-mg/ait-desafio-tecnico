@@ -45,7 +45,7 @@ const AddProductBulkModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, on
         formData.append('file', file);
 
         try {
-            const response = await fetch(`http://193.168.15.3:9000/api/v1/upload/`, {
+            const response = await fetch(`http://localhost:8000/api/v1/upload/`, {
                 method: 'POST',
                 body: formData,
             });

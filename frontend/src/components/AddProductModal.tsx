@@ -42,7 +42,7 @@ const AddProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, onErro
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response = await fetch(`http://193.168.15.3:9000/api/v1/articulos/`, {
+            const response = await fetch(`http://localhost:8000/api/v1/articulos/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

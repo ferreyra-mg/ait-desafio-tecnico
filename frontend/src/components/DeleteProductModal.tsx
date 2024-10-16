@@ -33,7 +33,7 @@ const DeleteProductModal: React.FC<ModalProps> = ({ show, onHide, onConfirm, onE
 
     const onSubmit = async (data: FormData) => {
         try {
-            const response = await fetch(`http://193.168.15.3:9000/api/v1/articulos/${data.id}/`, {
+            const response = await fetch(`http://localhost:8000/api/v1/articulos/${data.id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

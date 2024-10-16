@@ -230,79 +230,79 @@ import { useForm } from 'react-hook-form';
 import { Articulo } from '../App';
 &nbsp;
 interface FormData {
-  id: number;
-  cliente: number;
-  codigo: string;
-  descripcion: string;
-  precio: number;
+    id: number;
+    cliente: number;
+    codigo: string;
+    descripcion: string;
+    precio: number;
 }
 &nbsp;
 interface ModalProps {
-  show: boolean;
-  onHide: () =&gt; void;
-  onError: (msg: string) =&gt; void;
-  onConfirm: (data: FormData) =&gt; void;
-  productData: Articulo | null;
+    show: boolean;
+    onHide: () =&gt; void;
+    onError: (msg: string) =&gt; void;
+    onConfirm: (data: FormData) =&gt; void;
+    productData: Articulo | null;
 }
 &nbsp;
 const DeleteProductModal: React.FC&lt;ModalProps&gt; = ({ show, onHide, onConfirm, onError, productData }) =&gt; {
-  const { handleSubmit, setValue } = useForm&lt;FormData&gt;();
+    const { handleSubmit, setValue } = useForm&lt;FormData&gt;();
 &nbsp;
-  useEffect(() =&gt; {
-    if (productData) {
-      setValue('id', productData.id);
-      setValue('cliente', productData.cliente);
-      setValue('codigo', productData.codigo);
-      setValue('descripcion', productData.descripcion);
-      setValue('precio', productData.precio);
-    }
-  }, [productData, setValue]);
+    useEffect(() =&gt; {
+        if (productData) {
+            setValue('id', productData.id);
+            setValue('cliente', productData.cliente);
+            setValue('codigo', productData.codigo);
+            setValue('descripcion', productData.descripcion);
+            setValue('precio', productData.precio);
+        }
+    }, [productData, setValue]);
 &nbsp;
-  const onSubmit = async (data: FormData) =&gt; {
-    try {
-      const response = await fetch(`http://localhost:8000/api/v1/articulos/${data.id}/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        onConfirm(data);
-      } else {
-        onError('Error al enviar los datos');
-      }
-    } catch (error: Object | any) {
-      onError('Error:' + error.message || <span class="branch-1 cbranch-no" title="branch not covered" >error)</span>;
-    }
-  };
+    const onSubmit = async (data: FormData) =&gt; {
+        try {
+            const response = await fetch(`http://localhost:8000/api/v1/articulos/${data.id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) {
+                onConfirm(data);
+            } else {
+                onError('Error al enviar los datos');
+            }
+        } catch (error: Object | any) {
+            onError('Error:' + error.message || <span class="branch-1 cbranch-no" title="branch not covered" >error)</span>;
+        }
+    };
 &nbsp;
-  if (!show) return null;
-  if (!productData) return null;
+    if (!show) return null;
+    if (!productData) return null;
 &nbsp;
-  return (
-    &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-all duration-300 ease-in-out animate-fade-in-down"&gt;
-      &lt;div className="bg-white rounded-lg p-6 w-full max-w-lg "&gt;
-        &lt;div className="text-center mb-4"&gt;
-          &lt;h2 className="text-xl font-bold"&gt;¿Está seguro de eliminar el siguiente producto?&lt;/h2&gt;
-        &lt;/div&gt;
-        &lt;form onSubmit={handleSubmit(onSubmit)} role='form'&gt;
-          &lt;div className="mb-4 flex flex-col items-start"&gt;
-            &lt;span&gt;&lt;strong&gt;Código:&lt;/strong&gt; &lt;span className='ml-4 capitalize'&gt;{productData.codigo}&lt;/span&gt;&lt;/span&gt;
-            &lt;span&gt;&lt;strong&gt;Descripción:&lt;/strong&gt; &lt;span className='ml-4 capitalize'&gt;{productData.descripcion}&lt;/span&gt;&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div className="flex justify-end space-x-2"&gt;
-            &lt;button type="button" onClick={onHide} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"&gt;
-              Cancelar
-            &lt;/button&gt;
-            &lt;button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"&gt;
-              Confirmar
-            &lt;/button&gt;
-          &lt;/div&gt;
-        &lt;/form&gt;
-      &lt;/div &gt;
-    &lt;/div &gt;
-  );
+    return (
+        &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-all duration-300 ease-in-out animate-fade-in-down"&gt;
+            &lt;div className="bg-white rounded-lg p-6 w-full max-w-lg "&gt;
+                &lt;div className="text-center mb-4"&gt;
+                    &lt;h2 className="text-xl font-bold"&gt;¿Está seguro de eliminar el siguiente producto?&lt;/h2&gt;
+                &lt;/div&gt;
+                &lt;form onSubmit={handleSubmit(onSubmit)} role='form'&gt;
+                    &lt;div className="mb-4 flex flex-col items-start"&gt;
+                        &lt;span&gt;&lt;strong&gt;Código:&lt;/strong&gt; &lt;span className='ml-4 capitalize'&gt;{productData.codigo}&lt;/span&gt;&lt;/span&gt;
+                        &lt;span&gt;&lt;strong&gt;Descripción:&lt;/strong&gt; &lt;span className='ml-4 capitalize'&gt;{productData.descripcion}&lt;/span&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div className="flex justify-end space-x-2"&gt;
+                        &lt;button type="button" onClick={onHide} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"&gt;
+                            Cancelar
+                        &lt;/button&gt;
+                        &lt;button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"&gt;
+                            Confirmar
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+            &lt;/div &gt;
+        &lt;/div &gt;
+    );
 };
 &nbsp;
 export default DeleteProductModal;
@@ -313,7 +313,7 @@ export default DeleteProductModal;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-15T09:13:29.143Z
+                at 2024-10-16T05:04:17.047Z
             </div>
         <script src="prettify.js"></script>
         <script>

@@ -97,7 +97,7 @@ describe('AddProductBulkModal', () => {
         // fireEvent.submit(screen.getByRole('form'));
 
         // await waitFor(() => {
-        //     expect(fetchMock).toHaveBeenCalledWith('http://193.168.15.3:9000/api/v1/articulos/', {
+        //     expect(fetchMock).toHaveBeenCalledWith('http://localhost:8000/api/v1/articulos/', {
         //         method: 'POST',
         //         headers: {
         //             'Content-Type': 'application/json',
