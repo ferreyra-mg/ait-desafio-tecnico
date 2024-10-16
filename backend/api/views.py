@@ -1,3 +1,4 @@
+import io
 import os
 from rest_framework import viewsets, status as st
 from rest_framework.response import Response
@@ -68,3 +69,37 @@ class UploadExcelView(APIView):
             "mensaje": "Archivo procesado exitosamente",
             "procesados": procesados
         }, status=st.HTTP_200_OK)
+    
+from django.http import HttpResponse
+
+class DownloadExcelView(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            # Obtenemos el primer cliente de la base de datos. Emulamos por ahora que es el primer cliente,
+            # pero en un futuro se deberia obtener el cliente del usuario que subio el archivo a traves de un token JWT
+            cliente = Cliente.objects.all().first()
+            if not cliente:
+                return Response({"error": "No se encontró ningún cliente"}, status=st.HTTP_400_BAD_REQUEST)
+            
+            articulos = Articulo.objects.filter(cliente=cliente)
+            
+            if not articulos:
+                return Response({"error": "No se encontraron artículos para el cliente"}, status=st.HTTP_400_BAD_REQUEST)
+            
+            df = pd.DataFrame(list(articulos.values()))
+            filename = f"articulos_{cliente.nombre}.xlsx"
+            
+            # Create a BytesIO buffer to hold the Excel file
+            excel_buffer = io.BytesIO()
+            writer = pd.ExcelWriter(excel_buffer, engine='xlsxwriter')
+            df.to_excel(writer, index=False, sheet_name='Articulos')
+            writer.close()  # Use writer.close() instead of writer.save()
+            excel_buffer.seek(0)
+            
+            response = HttpResponse(excel_buffer.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            response.status_code = st.HTTP_200_OK
+            
+            return response        
+        except Exception as e:
+            return Response({"error": f"{str(e)}"}, status=st.HTTP_400_BAD_REQUEST)
